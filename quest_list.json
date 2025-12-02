@@ -1,0 +1,34 @@
+{
+  "quests": [
+    {
+      "difficulty": 1,
+      "title": "Eliminate Bugs",
+      "description": "Clear out bugs. End the game with a killcount of at least 200. Should be easy for a rookie."
+    },
+    {
+      "difficulty": 1,
+      "title": "Gather Samples",
+      "description": "Collect  samples from the local flora. Extract with at least 10 samples."
+    },
+    {
+      "difficulty": 2,
+      "title": "Glasscanon",
+      "description": "You may only dive with light armor next round."
+    },
+    {
+      "difficulty": 2,
+      "title": "Paint the Town Red",
+      "description": "You may only use stratagems from the orbital and eagle category"
+    },
+    {
+      "difficulty": 3,
+      "title": "Explosion Specialist",
+      "description": "You may only use weapons with splash damage (eg.: exploding crossbow, purifyer). Non explosive support weapons are forbidden."
+    },
+    {
+      "difficulty": 3,
+      "title": "Quicky",
+      "description": "Extract from a 40 minute mission within 15 minutes having it completed."
+    }
+  ]
+}

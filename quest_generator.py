@@ -1,0 +1,127 @@
+import json
+import random
+from typing import Optional, Tuple, Dict, Any, List
+from schema import Quest, GeneratedQuest, QuestStatus, User
+
+
+def load_user_quests() -> Dict[str, Any]:
+    """Load user quests from JSON file."""
+    with open("user_quests.json", "r") as f:
+        return json.load(f)
+
+
+def save_user_quests(users: List[User]) -> None:
+    """Save user quests to JSON file."""
+    with open("user_quests.json", "w") as f:
+        json.dump({"users": [u.to_dict() for u in users]}, f, indent=2)
+
+
+def get_user(username: str) -> Optional[User]:
+    """Get User object by username, returns None if not found."""
+    data = load_user_quests()
+    for user_data in data["users"]:
+        if user_data["username"] == username:
+            return User.from_dict(user_data)
+    return None
+
+
+def get_or_create_user(username: str) -> User:
+    """Get existing user or create a new one."""
+    user = get_user(username)
+    if user:
+        return user
+    return User(username)
+
+
+def save_user(user: User) -> None:
+    """Save or update a single user in the JSON file."""
+    data = load_user_quests()
+    user_entry = next((u for u in data["users"] if u["username"] == user.username), None)
+    
+    if user_entry:
+        user_entry.update(user.to_dict())
+    else:
+        data["users"].append(user.to_dict())
+    
+    save_user_quests([User.from_dict(u) for u in data["users"]])
+
+
+def generate_quest(username: str, difficulty: int) -> Tuple[Optional[Quest], str]:
+    """Generate a quest for the given user at the specified difficulty."""
+    user = get_or_create_user(username)
+    
+    if user.active_quest:
+        response_text = f"""
+════════════════════════════════════════
+          QUEST ALREADY ACTIVE
+════════════════════════════════════════
+
+**Soldier:** {username}
+
+You already have an active quest:
+**{user.active_quest['title']}**
+
+Complete or abandon it before requesting a new one!
+"""
+        return None, response_text
+    
+    with open("quest_list.json", "r") as f:
+        data = json.load(f)
+
+    matching_quests = [q for q in data["quests"] if q["difficulty"] == difficulty]
+
+    if not matching_quests:
+        return None, "No quests available for that difficulty."
+
+    quest_data = random.choice(matching_quests)
+    quest = Quest(quest_data["difficulty"], quest_data["title"], quest_data["description"])
+    
+    user.active_quest = {"title": quest.title, "difficulty": quest.difficulty, "description": quest.description}
+    save_user(user)
+    
+    response_text = f"""
+════════════════════════════════════════
+             NEW QUEST ASSIGNED
+════════════════════════════════════════
+
+**Soldier:** {username}
+**Mission:** {quest.title}
+**Difficulty:** {'⭐' * quest.difficulty}
+
+**Briefing:**
+{quest.description}
+
+Good luck, soldier!
+"""
+    
+    return quest, response_text
+
+
+def complete_user_quest(username: str) -> str:
+    """Clear active quest for a user and award points based on difficulty."""
+    user = get_or_create_user(username)
+    
+    if not user.active_quest:
+        return f"No active quest to complete for {username}."
+    
+    difficulty = user.active_quest["difficulty"]
+    points_earned = difficulty * 100
+    user.score += points_earned
+    user.active_quest = None
+    save_user(user)
+    
+    return f"Quest cleared for {username}. +{points_earned} points! Total score: {user.score}"
+
+
+def abandon_user_quest(username: str) -> str:
+    """Abandon active quest for a user without awarding points."""
+    user = get_or_create_user(username)
+    
+    if not user.active_quest:
+        return f"No active quest to abandon for {username}."
+    
+    quest_title = user.active_quest["title"]
+    user.active_quest = None
+    save_user(user)
+    
+    return f"Quest '{quest_title}' abandoned, {username}. Better luck next time, soldier!"
