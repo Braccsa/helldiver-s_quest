@@ -1,0 +1,29 @@
+{
+  "users": [
+    {
+      "username": "braccsa",
+      "active_quest": null,
+      "score": 1900
+    },
+    {
+      "username": "Helldiver's quest",
+      "active_quest": null,
+      "score": 300
+    },
+    {
+      "username": "prosandwiches",
+      "active_quest": null,
+      "score": 300
+    },
+    {
+      "username": "bernat2353",
+      "active_quest": null,
+      "score": 300
+    },
+    {
+      "username": "rainbowliquor",
+      "active_quest": null,
+      "score": 300
+    }
+  ]
+}

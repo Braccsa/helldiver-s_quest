@@ -1,0 +1,29 @@
+{
+  "team_quests": [
+    {
+      "difficulty": 1,
+      "title": "Jetpack Joyride",
+      "description": "Everyone must bring a jumppack or hower pack! Work together to complete the mission while airborne. The floor is lava!"
+    },
+    {
+      "difficulty": 3,
+      "title": "Old School",
+      "description": "Restricted loadout challenge! Only use the Constitution primary and support weapons are restricted to worldwar 2 era firearms."
+    },
+    {
+      "difficulty": 3,
+      "title": "Pacifist",
+      "description": "Complete the mission with minimal casualties. Extract with as few kills as possible (or none at all). Perfect for peaceful operators competing for score!"
+    },
+    {
+      "difficulty": 2,
+      "title": "Danger is my Middle Name",
+      "description": "All stratagems, grenades, and throwables can ONLY be called/thrown at your own feet or in front of you. Friendly fire ... isn't!"
+    },
+    {
+      "difficulty": 2,
+      "title": "Protect the President",
+      "description": "One soldier fights in light armor with only a pistol - the President. The rest must complete the mission while keeping the President alive. They cannot take any casualties!"
+    }
+  ]
+}

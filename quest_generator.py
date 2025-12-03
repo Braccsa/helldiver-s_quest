@@ -1,18 +1,19 @@
 import json
 import random
-from typing import Optional, Tuple, Dict, Any, List
-from schema import Quest, GeneratedQuest, QuestStatus, User
+from typing import Optional, Tuple
+from schema import Quest, User
+from utils import get_or_create_user, save_user, award_points_to_players
 
 
-def load_user_list() -> Dict[str, Any]:
+def load_user_list() -> dict:
     """Load user quests from JSON file."""
-    with open("user_list.json", "r") as f:
+    with open("activity/user_list.json", "r") as f:
         return json.load(f)
 
 
-def save_user_list(users: List[User]) -> None:
+def save_user_list(users: list) -> None:
     """Save user quests to JSON file."""
-    with open("user_list.json", "w") as f:
+    with open("activity/user_list.json", "w") as f:
         json.dump({"users": [u.to_dict() for u in users]}, f, indent=2)
 
 
@@ -65,7 +66,7 @@ Complete or abandon it before requesting a new one!
 """
         return None, response_text
     
-    with open("quest_list.json", "r") as f:
+    with open("questLists/quest_list.json", "r") as f:
         data = json.load(f)
 
     matching_quests = [q for q in data["quests"] if q["difficulty"] == difficulty]
@@ -92,6 +93,8 @@ Complete or abandon it before requesting a new one!
 {quest.description}
 
 Good luck, helldiver!
+════════════════════════════════════════
+
 """
     
     return quest, response_text
@@ -106,11 +109,11 @@ def complete_user_quest(username: str) -> str:
     
     difficulty = user.active_quest["difficulty"]
     points_earned = difficulty * 100
-    user.score += points_earned
     user.active_quest = None
     save_user(user)
     
-    return f"Quest cleared for {username}. +{points_earned} points! Total score: {user.score}"
+    reward_text = award_points_to_players([username], points_earned)
+    return f"Quest completed for {username}.\n{reward_text}"
 
 
 def abandon_user_quest(username: str) -> str:
@@ -125,3 +128,8 @@ def abandon_user_quest(username: str) -> str:
     save_user(user)
     
     return f"Quest '{quest_title}' abandoned, {username}. Better luck next time, helldiver!"
+
+
+def generate_team_quest_message(username: str) -> str:
+    """Generate a custom team quest message for a user. TODO: Implement full logic."""
+    return f"🎯 **TEAM QUEST ALERT**\n\nSoldier {username}, you have been selected for a team mission!\n\nStand by for further orders, soldier!"
