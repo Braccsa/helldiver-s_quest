@@ -57,4 +57,30 @@ async def leaderboard(ctx):
     leaderboard_text = get_leaderboard()
     await ctx.send(leaderboard_text)
 
+@bot.command()
+async def SOS(ctx):
+    help_text = """
+════════════════════════════════════════
+           AVAILABLE COMMANDS
+════════════════════════════════════════
+
+**!get_quest [difficulty]**
+Request a new quest. Difficulty: 1-3 (default: 1)
+
+**!complete_quest**
+Complete your active quest and earn points based on difficulty.
+
+**!abandon_quest**
+Abandon your active quest (no points awarded).
+
+**!stats**
+View your personal score and statistics.
+
+**!leaderboard**
+View the global leaderboard of all helldivers ranked by score.
+
+════════════════════════════════════════
+"""
+    await ctx.send(help_text)
+
 bot.run(TOKEN)

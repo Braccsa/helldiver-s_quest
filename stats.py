@@ -1,11 +1,11 @@
 from typing import List
-from quest_generator import load_user_quests
+from quest_generator import load_user_list
 from schema import User
 
 
 def get_user_stats(username: str) -> str:
     """Display score statistics for a specific user."""
-    data = load_user_quests()
+    data = load_user_list()
     user_data = next((u for u in data["users"] if u["username"] == username), None)
     
     if not user_data:
@@ -15,20 +15,20 @@ def get_user_stats(username: str) -> str:
     
     stats_text = f"""
 ════════════════════════════════════════
-             SOLDIER STATS
+             HELLDIVER STATS
 ════════════════════════════════════════
 
-**Soldier:** {user.username}
+**helldiver:** {user.username}
 **Total Score:** {user.score}
 
-Keep fighting, soldier!
+Keep fighting, helldiver!
 """
     return stats_text
 
 
 def get_leaderboard() -> str:
     """Display a leaderboard of users ranked by score."""
-    data = load_user_quests()
+    data = load_user_list()
     users = [User.from_dict(u) for u in data["users"]]
     
     if not users:
