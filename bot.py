@@ -145,9 +145,5 @@ async def dm(ctx, *, args: str = ""):
     except discord.Forbidden:
         await ctx.send(f"Could not send DM to {user.name} (DMs disabled).")
 
-@bot.command()
-async def rob(ctx, target: str = ""):
-    """Send rob command to another bot."""
-    await ctx.send("p!rob rainbowliquor")
 
 bot.run(TOKEN)
